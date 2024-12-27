@@ -31,7 +31,14 @@ class BankDataBaseHandler:
             cursor.execute(query, (user_email, amount))
             self.conn.commit()
 
+    def delete_user(self, user_email):
+        with self.conn.cursor() as cursor:
+            query = "DELETE FROM bank_app.bank_accounts WHERE user_email = %s"
+            cursor.execute(query, (user_email,))
+            self.conn.commit()
+
 bdb_handler=BankDataBaseHandler(host="localhost", database="postgres", user="postgres", password="root")
 bdb_handler2=BankDataBaseHandler(host="localhost", database="postgres", user="postgres", password="root")
-bdb_handler.add_user(user_email="ggg@gmail.com", amount=1500)
-bdb_handler2.add_user(user_email="hhh@gmail.com", amount=890)
+# bdb_handler.add_user(user_email="ggg@gmail.com", amount=1500)
+# bdb_handler2.add_user(user_email="hhh@gmail.com", amount=890)
+bdb_handler.delete_user(user_email="bbb@gmail.com")
