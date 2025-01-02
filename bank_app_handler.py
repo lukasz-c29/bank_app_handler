@@ -1,5 +1,6 @@
 import psycopg2
 from decimal import Decimal
+import re
 
 class BankDataBaseHandler:
 
@@ -27,6 +28,10 @@ class BankDataBaseHandler:
             print(result)
 
     def add_user(self, user_email: str, amount: Decimal) -> None:
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(pattern, user_email):        
+            raise ValueError(f"Invalid email address: {user_email}")
+ 
         with self.conn.cursor() as cursor:
             query = "INSERT INTO bank_app.bank_accounts (user_email, amount) VALUES (%s, %s)"
             cursor.execute(query, (user_email, amount))
@@ -73,6 +78,6 @@ class BankDataBaseHandler:
 
 bdb_handler=BankDataBaseHandler(host="localhost", database="postgres", user="postgres", password="root")
 bdb_handler2=BankDataBaseHandler(host="localhost", database="postgres", user="postgres", password="root")
-# bdb_handler.add_user(user_email="ggg@gmail.com", amount=1500)
+bdb_handler.add_user(user_email="hhhgmail.com", amount=1500)
 # bdb_handler2.add_user(user_email="hhh@gmail.com", amount=890)
-bdb_handler.delete_user(user_email="bbb@gmail.com")
+# bdb_handler.delete_user(user_email="bbb@gmail.com")
