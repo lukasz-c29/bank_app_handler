@@ -1,4 +1,5 @@
 import psycopg2
+from decimal import Decimal
 
 class BankDataBaseHandler:
 
@@ -25,19 +26,19 @@ class BankDataBaseHandler:
             result=cursor.fetchall()
             print(result)
 
-    def add_user(self, user_email, amount):
+    def add_user(self, user_email: str, amount: Decimal) -> None:
         with self.conn.cursor() as cursor:
             query = "INSERT INTO bank_app.bank_accounts (user_email, amount) VALUES (%s, %s)"
             cursor.execute(query, (user_email, amount))
             self.conn.commit()
 
-    def delete_user(self, user_email):
+    def delete_user(self, user_email: str) -> None : 
         with self.conn.cursor() as cursor:
             query = "DELETE FROM bank_app.bank_accounts WHERE user_email = %s"
             cursor.execute(query, (user_email,))
             self.conn.commit()
 
-    def card_payment(self, user_email, amount):
+    def card_payment(self, user_email: str, amount: Decimal) -> bool:
         try:
             with self.conn.cursor() as cursor:
                 query = "SELECT amount FROM bank_app.bank_accounts WHERE user_email = %s"
@@ -51,7 +52,7 @@ class BankDataBaseHandler:
                 current_balance=result[0]
                 print(f"Current balance for {user_email}: {current_balance}")
 
-                if current_balance<amount:
+                if current_balance < amount:
                     print(f"Insufficient funds for {user_email}")
                     return False
                 
