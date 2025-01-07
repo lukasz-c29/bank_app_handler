@@ -20,10 +20,10 @@ class BankDataBaseHandler:
             print(f"Error connecting to PostgreSQL: {e}")
             raise
 
-    def get_user(self,user_id):
+    def get_user(self,user_email):
         with self.conn.cursor() as cursor:
-            query = "SELECT * FROM bank_app.bank_accounts WHERE user_id = %s"
-            cursor.execute(query, (user_id,))            
+            query = "SELECT * FROM bank_app.bank_accounts WHERE user_email = %s"
+            cursor.execute(query, (user_email,))            
             result=cursor.fetchall()
             return result
             print(result)
